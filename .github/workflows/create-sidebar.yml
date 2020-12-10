@@ -22,7 +22,7 @@ jobs:
         run: npm install github-wiki-sidebar -g
 
       - name: Run github-wiki-sidebar
-        run: github-wiki-sidebar --git-push
+        run: github-wiki-sidebar --silent
       
       - name: Commit files
         run: |
