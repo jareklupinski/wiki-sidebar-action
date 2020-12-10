@@ -1,0 +1,38 @@
+name: Create Sidebar
+
+on:
+  gollum
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          repository: ${{github.repository}}.wiki
+      
+      - name: Set Up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+          
+      - name: Install github-wiki-sidebar
+        run: npm install github-wiki-sidebar -g
+
+      - name: Run github-wiki-sidebar
+        run: github-wiki-sidebar --git-push
+      
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Add changes"
+          
+      - name: Push changes to wiki repo
+        uses: ad-m/github-push-action@master
+        with:
+          repository: ${{github.repository}}.wiki
+          github_token: ${{ secrets.GITHUB_TOKEN }}
